@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 Future<Post> fetchPost() async {
-  final response = await http.get('https://jsonplaceholder.typicode.com/posts/21');
-  //final response = await http.get('https://api.github.com/search/repositories?sort=stars&q=Flutter');
+  //inal response = await http.get('https://jsonplaceholder.typicode.com/posts/21');
+  final response = await http.get('https://www.yahho.co.jp');
 
   if (response.statusCode == 200) {
     // If the call to the server was successful, parse the JSON

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/api/github_api_client.dart';
 import 'package:flutter_app/model/github_repo.dart';
 import 'package:flutter_app/model/jsonsample.dart';
+import 'package:flutter_app/model/photos.dart';
 
-
-void main() => runApp(new MyAppjson());//MyApp
+void main() => runApp(new MyAppphotos());//MyApp
 
 class MyApp extends StatelessWidget {
   @override
