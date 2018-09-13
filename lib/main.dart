@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/api/github_api_client.dart';
 import 'package:flutter_app/model/github_repo.dart';
+import 'package:flutter_app/model/jsonsample.dart';
 
-void main() => runApp(new MyApp());
+
+void main() => runApp(new MyAppjson());//MyApp
 
 class MyApp extends StatelessWidget {
   @override
