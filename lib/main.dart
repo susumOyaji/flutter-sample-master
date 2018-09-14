@@ -3,8 +3,17 @@ import 'package:flutter_app/api/github_api_client.dart';
 import 'package:flutter_app/model/github_repo.dart';
 import 'package:flutter_app/model/jsonsample.dart';
 import 'package:flutter_app/model/photos.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
 
-void main() => runApp(new MyAppphotos());//MyApp
+
+
+ 
+
+
+
+
+void main() => runApp(new MyApp());//MyApp
 
 class MyApp extends StatelessWidget {
   @override
@@ -67,17 +76,57 @@ class _MyHomePageState extends State<MyHomePage> {
             new Container(
               padding: const EdgeInsets.all(20.0),
               child: new RaisedButton(
-                child: const Text('Search'),
-                onPressed: _search,
-              ),
+                  child: const Text('Search'),
+                  onPressed: fetchPost(""),
+
+                            
+                          
+                    ),
             ),
             container,
+            /*FutureBuilder(
+              future: fetchPost("6976"),
+              builder: (context, returndata) {
+                if (returndata.hasError) print(returndata.error);
+
+                return returndata.hasData ? Center(child: Text(returndata.requireData )): Center(child: CircularProgressIndicator());
+              },
+            ),*/
           ],
         ),
       ),
     );
   }
 
+ void _search1() {
+   /*FutureBuilder(
+              future: fetchPost("6976"),
+              builder: (context, returndata) {
+                if (returndata.hasError) print(returndata.error);
+
+                return returndata.hasData ? Center(child: Text(returndata.requireData )): Center(child: CircularProgressIndicator());
+              },
+            ),*/
+  
+  Future fetchPost(String code) async {
+  //inal response = await http.get('https://jsonplaceholder.typicode.com/posts/21');
+  //final response = await http.get('https://www.yahho.co.jp');
+   final response= await http.get('https://info.finance.yahoo.co.jp/search/?query='+code);
+  if (response.statusCode == 200) {
+    // If the call to the server was successful, parse the JSON
+    return  response.body;//Post.fromJson(json.decode(response.body));
+  } else {
+    // If that call was not successful, throw an error.
+    throw Exception('Failed to load post');
+  }
+  }
+ }
+
+ 
+
+  
+  
+  
   void _search() {
     var client = new GithubClient();
     client.get(_controller.text).then((result) {
