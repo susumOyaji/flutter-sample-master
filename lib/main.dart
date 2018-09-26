@@ -80,7 +80,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: const Text('QuerySearch'),
                   onPressed:(){ 
                     _code="";
-                    _neverSatisfied();
+                    showSearchDialog(1);
+                    //_neverSatisfied();
                     print("print ${_code}");
                   }
               ),
@@ -104,7 +105,43 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
 
+ showSearchDialog(int i) async {
+    final codeController = TextEditingController();
+    final anserController = TextEditingController();
+    String returncode;
 
+    codeController.text= "ソニー";
+    anserController.text= " 1";
+    returncode=codeController.text;
+    
+    return showDialog<Null>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return new AlertDialog(
+        title: new Text('Rewind and remember'),
+        content: new SingleChildScrollView(
+          child: new ListBody(
+            children: <Widget>[
+              new Text('You will never be satisfied.'),
+              new Text('You\’re like me. I’m never satisfied.'),
+              new Text((fetchPost("6976").toString())),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          new FlatButton(
+            child: new Text('Regret'),
+            onPressed: () {
+            Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    
+    },
+  );
+}
 
 
 
@@ -160,37 +197,7 @@ Future printOneToFive() async {
   }
 }
 
-/*
-  return showDialog<Null>(
-    context: context,
-    barrierDismissible: false, // user must tap button!
-    builder: (BuildContext context) {
-      return new AlertDialog(
-        title: new Text('Rewind and remember'),
-        content: new SingleChildScrollView(
-          child: new ListBody(
-            children: <Widget>[
-              new Text('You will never be satisfied.'),
-              new Text('You\’re like me. I’m never satisfied.'),
-            ],
-          ),
-        ),
-        actions: <Widget>[
-          new FlatButton(
-            child: new Text('Regret'),
-            onPressed: () {
-              _code="";
-             fetchPost("6976");
-            
-             Navigator.of(context).pop();
-            },
-          ),
-          //var ans = await fetchPost("6976");//Text(_code),//Null 
-        ],
-      );
-    
-    },
-  );*/
+
 
 
 
