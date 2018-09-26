@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/api/github_api_client.dart';
+//import 'package:flutter_app/api/github_api_client.dart';
 import 'package:flutter_app/model/github_repo.dart';
 //import 'package:flutter_app/model/jsonsample.dart';
 //import 'package:flutter_app/model/photos.dart';
@@ -8,7 +8,7 @@ import 'dart:async';
 
 
 
- 
+
 
 
 
@@ -40,6 +40,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   List<GithubRepo> _items;
+  String _code;
 
   var _listViewKey = new Key('ListView');
 
@@ -53,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
       children: _createWidgets(_items),
     );
     var container = new Container(
-        height: 500.0,
+        height: 250.0,
         child: listView
     );
 
@@ -67,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             new TextField(
               decoration: const InputDecoration(
-                hintText: 'Flutter',
+                hintText: 'Name12',
                 labelText: 'Query',
               ),
               maxLines: 1,
@@ -76,22 +77,18 @@ class _MyHomePageState extends State<MyHomePage> {
             new Container(
               padding: const EdgeInsets.all(20.0),
               child: new RaisedButton(
-                  child: const Text('FlutterSearch'),
-                  onPressed:(){
-                    FutureBuilder(
-                      future: fetchPost("6976"),
-                      builder: (context, returndata) {
-                        if (returndata.hasError) print(returndata.error);
-
-                        return returndata.hasData ? Center(child: Text(returndata.requireData )): Center(child: CircularProgressIndicator());
-                      },
-                    );  
+                  child: const Text('QuerySearch'),
+                  onPressed:(){ 
+                    _code="";
+                    _neverSatisfied();
+                    print("print ${_code}");
                   }
-                  
               ),
+             
             ),
+           
             container,
-            FutureBuilder(
+           FutureBuilder(
               future: fetchPost("6976"),
               builder: (context, returndata) {
                 if (returndata.hasError) print(returndata.error);
@@ -101,39 +98,130 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
         ),
-      ),
+       ),
+       
     );
   }
 
- 
-  Future fetchPost(String code) async {
+
+
+
+
+
+
+
+Widget _neverSatisfied() {
+  return new AlertDialog(
+        title: new Text('Rewind and remember'),
+        content: new SingleChildScrollView(
+          child: new ListBody(
+            children: <Widget>[
+              new Text('You will never be satisfied.'),
+              new Text('You\’re like me. I’m never satisfied.'),
+              
+              FutureBuilder(
+                future:  fetchPost("6976"),
+                builder: (context, returndata) {
+                  if (returndata.hasError) print(returndata.error);
+
+                  return returndata.hasData ? Center(child: Text(returndata.requireData )): Center(child: CircularProgressIndicator());
+                },
+              ),
+              
+            ],
+          ),
+        ),
+    );
+  }
+
+
+void _getPrime() async {
+  var oneToFive = printOneToFive();
+  var sixToTen = printSixToTen();
+
+  setState((){
+    //prime=10;
+  });
+}
+
+Future printSixToTen() async {
+  for(int i = 6; i <= 10; ++i) {
+    await new Future.delayed(const Duration(seconds: 1), () {
+      print(i);
+    });
+  }
+}
+
+Future printOneToFive() async {
+  for(int i = 1; i <= 5; ++i) {
+    await new Future.delayed(const Duration(seconds: 1), () {
+      print(i);
+    });
+  }
+}
+
+/*
+  return showDialog<Null>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return new AlertDialog(
+        title: new Text('Rewind and remember'),
+        content: new SingleChildScrollView(
+          child: new ListBody(
+            children: <Widget>[
+              new Text('You will never be satisfied.'),
+              new Text('You\’re like me. I’m never satisfied.'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          new FlatButton(
+            child: new Text('Regret'),
+            onPressed: () {
+              _code="";
+             fetchPost("6976");
+            
+             Navigator.of(context).pop();
+            },
+          ),
+          //var ans = await fetchPost("6976");//Text(_code),//Null 
+        ],
+      );
+    
+    },
+  );*/
+
+
+
+
+
+
+ Future<String> fetchPost(String code) async {
+   _code="";
   //inal response = await http.get('https://jsonplaceholder.typicode.com/posts/21');
   //final response = await http.get('https://www.yahho.co.jp');
     final response= await http.get('https://info.finance.yahoo.co.jp/search/?query='+code);
     if (response.statusCode == 200) {
     // If the call to the server was successful, parse the JSON
+     _code = response.body;
+    //print(response.body);
+    
     return  response.body;//Post.fromJson(json.decode(response.body));
     } else {
     // If that call was not successful, throw an error.
       throw Exception('Failed to load finance');
     }
-  }
- 
-
- 
-
-  
-  
-  
-  void _search() {
-    var client = new GithubClient();
-    client.get(_controller.text).then((result) {
-      setState(() {
-        _items = result;
-      });
-    });
+   
   }
 
+
+
+
+
+
+
+  
   Iterable<Widget> _createWidgets(List<GithubRepo> items) {
     var ret = new List<Widget>();
     if (items == null) {
